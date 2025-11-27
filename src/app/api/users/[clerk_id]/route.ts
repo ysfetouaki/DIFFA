@@ -5,10 +5,10 @@ import { eq } from 'drizzle-orm';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { clerk_id: string } }
+  { params }: { params: Promise<{ clerk_id: string }> }
 ) {
   try {
-    const clerkId = params.clerk_id;
+    const { clerk_id: clerkId } = await params;
 
     // Validate clerk_id parameter
     if (!clerkId || clerkId.trim() === '') {
