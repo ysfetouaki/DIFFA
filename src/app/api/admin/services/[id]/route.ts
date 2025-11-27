@@ -4,24 +4,6 @@ import { db } from '@/db';
 import { services, users } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 
-interface MultilingualField {
-  en: string;
-  fr: string;
-  es: string;
-  it: string;
-}
-
-interface Service {
-  id: number;
-  createdAt: string;
-  updatedAt: string;
-  title: string | null;
-  description: string | null;
-  icon: string;
-  order: number;
-  active: number | boolean;
-}
-
 async function validateAdmin(userId: string) {
   const user = await db.select()
     .from(users)
@@ -57,44 +39,9 @@ function validateMultilingualField(field: any, fieldName: string): { valid: bool
   return { valid: true };
 }
 
-// Helper function to safely parse JSON with proper typing
-function safeJsonParse(str: string | null): MultilingualField | null {
-  if (!str || typeof str !== 'string' || str.trim() === '') {
-    return null;
-  }
-  
-  try {
-    const parsed = JSON.parse(str);
-    // Validate the parsed object has the required structure
-    if (
-      typeof parsed === 'object' && 
-      parsed !== null && 
-      'en' in parsed && 
-      'fr' in parsed && 
-      'es' in parsed && 
-      'it' in parsed &&
-      typeof parsed.en === 'string' &&
-      typeof parsed.fr === 'string' &&
-      typeof parsed.es === 'string' &&
-      typeof parsed.it === 'string'
-    ) {
-      return parsed as MultilingualField;
-    }
-    return null;
-  } catch {
-    return null;
-  }
-}
-
-// Type guard to check if updates object has more than just updatedAt
-function hasValidUpdates(updates: Record<string, any>): boolean {
-  const keys = Object.keys(updates);
-  return keys.length > 1 || (keys.length === 1 && !keys.includes('updatedAt'));
-}
-
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { userId } = await auth();
@@ -113,7 +60,7 @@ export async function PUT(
       );
     }
 
-    const id = params.id;
+    const { id } = await params;
     if (!id || isNaN(parseInt(id))) {
       return NextResponse.json(
         { error: 'Valid ID is required', code: 'INVALID_ID' },
@@ -138,7 +85,14 @@ export async function PUT(
     const body = await request.json();
     const { title, description, icon, order, active } = body;
 
-    const updates: Record<string, any> = {
+    const updates: Partial<{
+      updatedAt: string;
+      title: string;
+      description: string;
+      icon: string;
+      order: number;
+      active: boolean;
+    }> = {
       updatedAt: new Date().toISOString()
     };
 
@@ -191,15 +145,7 @@ export async function PUT(
           { status: 400 }
         );
       }
-      updates.active = active ? 1 : 0;
-    }
-
-    // Check if there are actual updates to make
-    if (!hasValidUpdates(updates)) {
-      return NextResponse.json(
-        { error: 'No valid fields to update', code: 'NO_UPDATES' },
-        { status: 400 }
-      );
+      updates.active = active;
     }
 
     const updatedService = await db.update(services)
@@ -214,23 +160,18 @@ export async function PUT(
       );
     }
 
-    // Cast to Service type and use safeJsonParse
-    const service = updatedService[0] as Service;
     const result = {
-      ...service,
-      title: safeJsonParse(service.title),
-      description: safeJsonParse(service.description),
-      active: Boolean(service.active)
+      ...updatedService[0],
+      title: updatedService[0].title ? JSON.parse(updatedService[0].title as string) : null,
+      description: updatedService[0].description ? JSON.parse(updatedService[0].description as string) : null,
+      active: Boolean(updatedService[0].active)
     };
 
     return NextResponse.json(result, { status: 200 });
   } catch (error) {
     console.error('PUT error:', error);
     return NextResponse.json(
-      { 
-        error: 'Internal server error: ' + (error as Error).message,
-        code: 'INTERNAL_SERVER_ERROR'
-      },
+      { error: 'Internal server error: ' + (error as Error).message },
       { status: 500 }
     );
   }
@@ -238,7 +179,7 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { userId } = await auth();
@@ -257,7 +198,7 @@ export async function DELETE(
       );
     }
 
-    const id = params.id;
+    const { id } = await params;
     if (!id || isNaN(parseInt(id))) {
       return NextResponse.json(
         { error: 'Valid ID is required', code: 'INVALID_ID' },
@@ -290,13 +231,11 @@ export async function DELETE(
       );
     }
 
-    // Cast to Service type and use safeJsonParse
-    const service = deletedService[0] as Service;
     const result = {
-      ...service,
-      title: safeJsonParse(service.title),
-      description: safeJsonParse(service.description),
-      active: Boolean(service.active)
+      ...deletedService[0],
+      title: deletedService[0].title ? JSON.parse(deletedService[0].title as string) : null,
+      description: deletedService[0].description ? JSON.parse(deletedService[0].description as string) : null,
+      active: Boolean(deletedService[0].active)
     };
 
     return NextResponse.json(
@@ -309,10 +248,7 @@ export async function DELETE(
   } catch (error) {
     console.error('DELETE error:', error);
     return NextResponse.json(
-      { 
-        error: 'Internal server error: ' + (error as Error).message,
-        code: 'INTERNAL_SERVER_ERROR'
-      },
+      { error: 'Internal server error: ' + (error as Error).message },
       { status: 500 }
     );
   }
