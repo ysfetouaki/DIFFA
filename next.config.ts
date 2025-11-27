@@ -7,7 +7,6 @@ const LOADER = path.resolve(
 );
 
 const nextConfig: NextConfig = {
-  // <-- ignore ESLint errors during production builds on Vercel
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -25,8 +24,8 @@ const nextConfig: NextConfig = {
     ],
   },
 
-  // keep this if you intentionally want tracing root two levels up
-  outputFileTracingRoot: path.resolve(__dirname, "../../"),
+  // removed outputFileTracingRoot — using Next's default location avoids path duplication on Vercel
+  // outputFileTracingRoot: path.resolve(__dirname, "../../"),
 
   turbopack: {
     rules: {
