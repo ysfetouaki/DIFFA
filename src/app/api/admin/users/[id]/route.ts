@@ -6,7 +6,7 @@ import { eq } from 'drizzle-orm';
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { userId } = await auth();
@@ -37,7 +37,7 @@ export async function PUT(
       );
     }
 
-    const id = params.id;
+    const { id } = await params;
     if (!id || isNaN(parseInt(id))) {
       return NextResponse.json(
         { error: 'Valid ID is required', code: 'INVALID_ID' },
@@ -113,7 +113,7 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { userId } = await auth();
@@ -144,7 +144,7 @@ export async function DELETE(
       );
     }
 
-    const id = params.id;
+    const { id } = await params;
     if (!id || isNaN(parseInt(id))) {
       return NextResponse.json(
         { error: 'Valid ID is required', code: 'INVALID_ID' },
