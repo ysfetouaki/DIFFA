@@ -1,0 +1,345 @@
+/* Updated: 2025-11-26T23:36:23.187Z */
+/* Updated: 2025-11-26T23:23:38.482Z */
+/* Updated: 2025-11-25T22:33:41.556Z */
+/* Updated: 2025-11-25T22:29:30.747Z */
+/* Updated: 2025-11-25T22:21:52.404Z */
+/* Updated: 2025-11-25T18:25:32.375Z */
+/* Updated: 2025-11-25T18:17:24.297Z */
+/* Updated: 2025-11-24T20:23:20.356Z */
+/* Updated: 2025-11-24T20:23:07.388Z */
+/* Updated: 2025-11-24T01:57:09.676Z */
+/* Updated: 2025-11-24T01:31:49.202Z */
+/* Updated: 2025-11-24T01:21:11.981Z */
+/* Updated: 2025-11-24T00:47:30.153Z */
+/* Updated: 2025-11-24T00:27:15.301Z */
+/* Updated: 2025-11-24T00:24:48.207Z */
+/* Updated: 2025-11-24T00:01:11.537Z */
+/* Updated: 2025-11-23T23:40:07.656Z */
+/* Updated: 2025-11-23T23:35:28.177Z */
+/* Updated: 2025-11-23T23:28:12.595Z */
+/* Updated: 2025-11-23T23:08:58.618Z */
+/* Updated: 2025-11-23T23:06:03.185Z */
+/* Updated: 2025-11-23T22:17:07.670Z */
+/* Updated: 2025-11-23T19:25:11.961Z */
+/* Updated: 2025-11-23T18:47:24.054Z */
+/* Updated: 2025-11-23T18:46:44.485Z */
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=La+Belle+Aurore&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap");
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-background: #ffffff;
+  --color-foreground: #1a1a1a;
+
+  --color-card: #ffffff;
+  --color-card-foreground: #1a1a1a;
+
+  --color-popover: #ffffff;
+  --color-popover-foreground: #1a1a1a;
+
+  --color-primary: #FFB73F;
+  --color-primary-foreground: #ffffff;
+
+  --color-secondary: #f0f7fb;
+  --color-secondary-foreground: #1a1a1a;
+
+  --color-muted: #666666;
+  --color-muted-foreground: #1a1a1a;
+
+  --color-accent: #70CFF1;
+  --color-accent-foreground: #ffffff;
+
+  --color-destructive: #c67b5c;
+  --color-destructive-foreground: #ffffff;
+
+  --color-border: #e5e5e5;
+  --color-input: #e5e5e5;
+  --color-ring: #FFB73F;
+
+  --color-chart-1: #FFB73F;
+  --color-chart-2: #70CFF1;
+  --color-chart-3: #1e3a5f;
+  --color-chart-4: #f1c40f;
+  --color-chart-5: #e74c3c;
+
+  --color-header-background: rgba(255, 183, 63, 0.95);
+  --color-booking-background: rgba(112, 207, 241, 0.9);
+  --color-dark-overlay: rgba(0, 0, 0, 0.5);
+  --color-link-hover: #e69d1a;
+  --color-footer-background: #1a1a1a;
+
+  --font-display: "Playfair Display", serif;
+  --font-body: "Inter", sans-serif;
+  --font-script: "La Belle Aurore", cursive;
+  --font-secondary: "Cormorant Garamond", serif;
+
+  --radius-lg: 0.5rem;
+  --radius-md: calc(0.5rem - 2px);
+  --radius-sm: calc(0.5rem - 4px);
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+}
+
+/*
+  The default border color has changed to currentColor in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: #e5e5e5;
+  }
+}
+
+@layer utilities {
+  body {
+    font-family: var(--font-body);
+  }
+}
+
+@layer base {
+  :root {
+    --background: #ffffff;
+    --foreground: #1a1a1a;
+    --card: #ffffff;
+    --card-foreground: #1a1a1a;
+    --popover: #ffffff;
+    --popover-foreground: #1a1a1a;
+    --primary: #FFB73F;
+    --primary-foreground: #ffffff;
+    --secondary: #f0f7fb;
+    --secondary-foreground: #1a1a1a;
+    --muted: #666666;
+    --muted-foreground: #1a1a1a;
+    --accent: #70CFF1;
+    --accent-foreground: #ffffff;
+    --destructive: #c67b5c;
+    --destructive-foreground: #ffffff;
+    --border: #e5e5e5;
+    --input: #e5e5e5;
+    --ring: #FFB73F;
+    --chart-1: #FFB73F;
+    --chart-2: #70CFF1;
+    --chart-3: #1e3a5f;
+    --chart-4: #f1c40f;
+    --chart-5: #e74c3c;
+    --radius: 0.5rem;
+    --header-background: rgba(255, 183, 63, 0.95);
+    --booking-background: rgba(112, 207, 241, 0.9);
+    --dark-overlay: rgba(0, 0, 0, 0.5);
+    --link-hover: #e69d1a;
+    --footer-background: #1a1a1a;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
+    color: var(--foreground);
+  }
+
+  h1 {
+    font-size: clamp(3.5rem, 5vw, 4.5rem);
+    font-weight: 300;
+    line-height: 1.2;
+    letter-spacing: 0.5px;
+  }
+
+  h2 {
+    font-size: clamp(2.625rem, 4vw, 3rem);
+    font-weight: 400;
+    line-height: 1.3;
+  }
+
+  h3 {
+    font-size: clamp(2rem, 3vw, 2.25rem);
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  h4 {
+    font-size: clamp(1.5rem, 2.5vw, 1.75rem);
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  h5 {
+    font-size: clamp(1.125rem, 2vw, 1.25rem);
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  h6 {
+    font-size: clamp(0.75rem, 1.5vw, 0.875rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  .text-body-lg {
+    font-size: 1.125rem;
+    font-weight: 400;
+    line-height: 1.7;
+  }
+
+  .text-body-regular {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.6;
+  }
+
+  .text-body-sm {
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+  .text-caption {
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  .font-script {
+    font-family: var(--font-script);
+  }
+
+  .font-secondary {
+    font-family: var(--font-secondary);
+  }
+
+  .container {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  @media (min-width: 1024px) {
+    .container {
+      padding-left: 80px;
+      padding-right: 80px;
+    }
+  }
+  
+  /* Creative Button Hover Effects */
+  button,
+  a.inline-block,
+  .btn {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  button:hover,
+  a.inline-block:hover,
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  }
+  
+  button:active,
+  a.inline-block:active,
+  .btn:active {
+    transform: translateY(0);
+  }
+  
+  /* Shimmer effect on hover */
+  button::before,
+  a.inline-block::before,
+  .btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+  }
+  
+  button:hover::before,
+  a.inline-block:hover::before,
+  .btn:hover::before {
+    left: 100%;
+  }
+  
+  /* Ripple effect */
+  @keyframes ripple {
+    0% {
+      transform: scale(0);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(4);
+      opacity: 0;
+    }
+  }
+  
+  .btn-ripple {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .btn-ripple::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 50%;
+    transform: scale(1);
+    transform-origin: center;
+  }
+  
+  .btn-ripple:active::after {
+    animation: ripple 0.6s ease-out;
+  }
+}
+
+/* Hide Next.js error overlay portal */
+nextjs-portal {
+  display: none !important;
+}
