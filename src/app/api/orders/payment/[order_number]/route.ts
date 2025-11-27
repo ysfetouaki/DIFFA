@@ -5,10 +5,10 @@ import { eq } from 'drizzle-orm';
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { order_number: string } }
+  { params }: { params: Promise<{ order_number: string }> }
 ) {
   try {
-    const { order_number } = params;
+    const { order_number } = await params;
 
     // Validate order_number
     if (!order_number || typeof order_number !== 'string' || order_number.trim() === '') {
